@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculatrice d'intérêts composés</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator-container">
+        <h2 class="calculator-title">Calculatrice d'intérêts composés</h2>
+        <form id="calculator-form">
+            <div class="calculator-group">
+                <label class="calculator-label" for="capital">Capital initial (€):</label>
+                <input type="number" step="0.01" name="capital" id="capital" class="calculator-input" required>
+            </div>
+
+            <div class="calculator-group">
+                <label class="calculator-label" for="epargne">Épargne mensuelle (€):</label>
+                <input type="number" step="0.01" name="epargne" id="epargne" class="calculator-input" required>
+            </div>
+
+            <div class="calculator-group">
+                <label class="calculator-label" for="periode">Période (années):</label>
+                <input type="number" name="periode" id="periode" class="calculator-input" min="1" required>
+            </div>
+
+            <div class="calculator-group">
+                <label class="calculator-label" for="taux">Taux d’intérêt annuel (%):</label>
+                <input type="number" step="0.01" name="taux" id="taux" class="calculator-input" required>
+            </div>
+
+            <div class="calculator-group">
+                <label class="calculator-label" for="intervalle">Intervalle de versement des intérêts:</label>
+                <select name="intervalle" id="intervalle" class="calculator-select" required>
+                    <option value="mensuel">Mensuel</option>
+                    <option value="trimestriel">Trimestriel</option>
+                    <option value="annuel">Annuel</option>
+                </select>
+            </div>
+
+            <button type="submit" class="calculator-button">Calculer</button>
+        </form>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
