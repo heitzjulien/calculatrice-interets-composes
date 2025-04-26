@@ -11,13 +11,13 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100dvh;
+    min-height: 100vh;
 }
 
 .calculator-container {
     background-color: #fff;
     width: 100vw;
-    height: 100dvh;
+    height: 100vh;
     padding: 20px;
     box-sizing: border-box;
     display: flex;
@@ -76,10 +76,6 @@ body {
         height: auto;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    body {
-        padding: 40px;
     }
 
     .calculator-title {
