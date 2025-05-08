@@ -12,12 +12,12 @@
         <form id="calculator-form">
             <div class="calculator-group">
                 <label class="calculator-label" for="capital">Capital initial (€):</label>
-                <input type="number" step="0.01" name="capital" id="capital" class="calculator-input" required>
+                <input type="number" step="100" name="capital" id="capital" class="calculator-input" required>
             </div>
 
             <div class="calculator-group">
                 <label class="calculator-label" for="epargne">Épargne mensuelle (€):</label>
-                <input type="number" step="0.01" name="epargne" id="epargne" class="calculator-input" required>
+                <input type="number" step="50" min="0" name="epargne" id="epargne" class="calculator-input" required>
             </div>
 
             <div class="calculator-group">
@@ -27,7 +27,7 @@
 
             <div class="calculator-group">
                 <label class="calculator-label" for="taux">Taux d’intérêt annuel (%):</label>
-                <input type="number" step="0.01" name="taux" id="taux" class="calculator-input" required>
+                <input type="number" step="0.5" min="0" name="taux" id="taux" class="calculator-input" required>
             </div>
 
             <div class="calculator-group">
