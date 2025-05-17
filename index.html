@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculatrice d'intérêts composés</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        body {
+            font-family: system-ui, sans-serif;
+            background-color: #f4f7f8;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .calculator-container {
+            background-color: #fff;
+            width: 100vw;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .calculator-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 22px;
+        }
+        .calculator-group {
+            margin-bottom: 16px;
+        }
+        .calculator-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .calculator-input,
+        .calculator-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .calculator-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6834d4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .calculator-button:hover {
+            background-color: #401D87;
+        }
+        @media (min-width: 600px) {
+            .calculator-container {
+                max-width: 500px;
+                height: auto;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .calculator-title {
+                font-size: 24px;
+            }
+        }
+        .resultat {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+<div class="calculator-container">
+    <h2 class="calculator-title">Calculatrice d'intérêts composés</h2>
+    <form id="calculator-form">
+        <div class="calculator-group">
+            <label class="calculator-label" for="capital">Capital initial (€):</label>
+            <input type="number" step="100" name="capital" id="capital" class="calculator-input" required>
+        </div>
+
+        <div class="calculator-group">
+            <label class="calculator-label" for="epargne">Épargne mensuelle (€):</label>
+            <input type="number" step="50" min="0" name="epargne" id="epargne" class="calculator-input" required>
+        </div>
+
+        <div class="calculator-group">
+            <label class="calculator-label" for="periode">Période (années):</label>
+            <input type="number" name="periode" id="periode" class="calculator-input" min="1" required>
+        </div>
+
+        <div class="calculator-group">
+            <label class="calculator-label" for="taux">Taux d’intérêt annuel (%):</label>
+            <input type="number" step="0.5" min="0" name="taux" id="taux" class="calculator-input" required>
+        </div>
+
+        <div class="calculator-group">
+            <label class="calculator-label" for="intervalle">Intervalle de versement des intérêts:</label>
+            <select name="intervalle" id="intervalle" class="calculator-select" required>
+                <option value="mensuel">Mensuel</option>
+                <option value="trimestriel">Trimestriel</option>
+                <option value="annuel">Annuel</option>
+            </select>
+        </div>
+
+        <button type="submit" class="calculator-button">Calculer</button>
+        <div id="resultat" class="resultat" role="status" aria-live="polite"></div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById('calculator-form');
+
+        if (!form) {
+            return;
+        }
+
+        form.onsubmit = function (e) {
+            e = e || window.event;
+            e.preventDefault();
+
+            var capital = parseFloat(form.capital.value);
+            var epargne = parseFloat(form.epargne.value);
+            var periode = parseInt(form.periode.value, 10);
+            var tauxAnnuel = parseFloat(form.taux.value);
+            var intervalle = form.intervalle.value;
+
+            if (isNaN(capital) || isNaN(epargne) || isNaN(periode) || isNaN(tauxAnnuel)) {
+                afficherResultat("Veuillez remplir tous les champs correctement.");
+                return;
+            }
+
+            var frequence = 1; // par défaut : annuel
+            if (intervalle === 'mensuel') {
+                frequence = 12;
+            } else if (intervalle === 'trimestriel') {
+                frequence = 4;
+            }
+
+            var tauxPeriodique = tauxAnnuel / 100 / frequence;
+            var nbPeriodes = periode * frequence;
+            var total = capital;
+            var i;
+
+            for (i = 0; i < nbPeriodes; i++) {
+                total = total * (1 + tauxPeriodique);
+                // Versement mensuel uniquement si fréquence mensuelle :
+                if (frequence === 12) {
+                    total += epargne;
+                } else if (frequence === 4 && (i % 3 === 2)) {
+                    // 3 versements mensuels regroupés pour le trimestre
+                    total += epargne * 3;
+                } else if (frequence === 1) {
+                    total += epargne * 12;
+                }
+            }
+
+            afficherResultat("Montant final : " + total.toFixed(2) + " €");
+        };
+
+        function afficherResultat(message) {
+            var zone = document.getElementById('resultat');
+            if (zone) {
+                zone.textContent = message;
+            }
+        }
+    });
+</script>
+</body>
+</html>
