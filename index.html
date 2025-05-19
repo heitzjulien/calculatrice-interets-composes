@@ -4,7 +4,14 @@
         <meta charset="UTF-8" />
         <title>Calculatrice d'intérêts composés</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+            integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="main.js" defer></script>
         <style>
             :root {
                 --primary: #6834d4;
@@ -75,6 +82,7 @@
             }
 
             .calculator-description {
+                text-align: justify;
                 font-size: 16px;
                 color: var(--secondary);
                 max-width: 500px;
@@ -653,125 +661,5 @@
                 </div>
             </section>
         </div>
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const form = document.getElementById("calculator-form");
-                const calculatorSection = document.querySelector(".calculator-section");
-                const noScriptMessage = document.getElementById("no-script-message");
-
-                // Masquer la calculatrice si JS est désactivé
-                if (noScriptMessage) {
-                    calculatorSection.style.display = "none";
-                    noScriptMessage.style.display = "block";
-                    return;
-                }
-
-                if (!form) return;
-
-                // Initialiser le graphique
-                const ctx = document.getElementById("results-chart").getContext("2d");
-                const chart = new Chart(ctx, {
-                    type: "line",
-                    data: { labels: [], datasets: [] },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: { beginAtZero: true },
-                        },
-                    },
-                });
-
-                form.onsubmit = function (e) {
-                    e.preventDefault();
-
-                    let capital = parseFloat(form.capital.value) || 0;
-                    let epargne = parseFloat(form.epargne.value) || 0;
-                    let periode = parseInt(form.periode.value, 10) || 0;
-                    let tauxAnnuel = parseFloat(form.taux.value) || 0;
-                    let intervalle = form.intervalle.value;
-
-                    let frequence = intervalle === "mensuel" ? 12 : intervalle === "trimestriel" ? 4 : 1;
-
-                    let tauxPeriodique = tauxAnnuel / 100 / frequence;
-                    let nbPeriodes = periode * frequence;
-
-                    // Calcul des données pour le graphique
-                    const years = [];
-                    const capitalData = [];
-                    const interestData = [];
-
-                    let total = capital;
-                    let totalPayments = capital;
-                    let totalInterest = 0;
-
-                    // Ajout point de départ
-                    years.push(0);
-                    capitalData.push(capital);
-                    interestData.push(0);
-
-                    for (let year = 1; year <= periode; year++) {
-                        for (let period = 0; period < frequence; period++) {
-                            let interest = total * tauxPeriodique;
-                            totalInterest += interest;
-                            total = total * (1 + tauxPeriodique);
-
-                            if (frequence === 12) {
-                                total += epargne;
-                                totalPayments += epargne;
-                            } else if (frequence === 4 && period % 3 === 2) {
-                                total += epargne * 3;
-                                totalPayments += epargne * 3;
-                            }
-                        }
-
-                        // Pour le graphique annuel
-                        years.push(year);
-                        capitalData.push(totalPayments);
-                        interestData.push(totalInterest);
-                    }
-
-                    // Mise à jour du graphique
-                    chart.data.labels = years;
-                    chart.data.datasets = [
-                        {
-                            label: "Intérêts",
-                            data: interestData,
-                            backgroundColor: "rgba(241, 192, 134, 0.6)",
-                            borderColor: "rgba(241, 192, 134, 1)",
-                            fill: true,
-                        },
-                        {
-                            label: "Versements",
-                            data: capitalData,
-                            borderColor: "rgba(141, 173, 255, 1)",
-                            fill: true,
-                        },
-                    ];
-                    chart.update();
-
-                    // Mise à jour des résultats
-                    document.getElementById("final-amount").textContent = formatMoney(total);
-                    document.getElementById("total-payments").textContent = formatMoney(totalPayments - capital);
-                    document.getElementById("total-interest").textContent = formatMoney(totalInterest);
-
-                    // Mise à jour du résumé
-                    document.getElementById("summary-capital").textContent = formatMoney(capital);
-                    document.getElementById("summary-monthly").textContent = formatMoney(epargne);
-                    document.getElementById("summary-years").textContent = periode;
-                    document.getElementById("summary-rate").textContent = tauxAnnuel + "%";
-                    document.getElementById("summary-final").textContent = formatMoney(total);
-
-                    // Mise à jour de l'année de fin
-                    let currentYear = new Date().getFullYear();
-                    document.getElementById("end-year-label").textContent = currentYear + periode;
-                };
-
-                function formatMoney(amount) {
-                    return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$& ") + " €";
-                }
-            });
-        </script>
     </body>
 </html>
