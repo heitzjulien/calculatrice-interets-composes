@@ -365,52 +365,53 @@
         </style>
     </head>
     <body>
-        <noscript>
-            <style>
-                .calculator-only {
-                    display: none !important;
-                }
-                .noscript-message {
-                    display: block;
-                    background: #f8f9fa;
-                    padding: 20px;
-                    border-radius: 8px;
-                    margin: 20px 0;
-                    text-align: center;
-                }
-            </style>
-            <div class="noscript-message">
-                <p>La calculatrice nécessite JavaScript pour fonctionner. Voici la documentation :</p>
+    <noscript>
+        <style>
+            .calculator-only {
+                display: none !important;
+            }
+            .noscript-message {
+                display: block;
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 8px;
+                margin: 20px 0;
+                text-align: center;
+            }
+        </style>
+        <div class="noscript-message" role="alert" aria-live="assertive">
+            <p>La calculatrice nécessite JavaScript pour fonctionner. Voici la documentation :</p>
+        </div>
+    </noscript>
+
+    <div class="container">
+        <header role="banner">
+            <div class="logo" aria-label="Titre de la page : Calculatrice d'intérêts composés">
+                Calculatrice d'intérêts composés
             </div>
-        </noscript>
+        </header>
 
-        <div class="container">
-            <header>
-                <div class="logo">Calculatrice d'intérêts composés</div>
-            </header>
+        <section class="calculator-section calculator-only" role="region" aria-labelledby="calculator-title">
+            <div class="calculator-form">
+                <div class="calculator-header">
+                    <h1 id="calculator-title" class="calculator-title">Simulez vos intérêts composés</h1>
+                    <p class="calculator-description">
+                        Calculez le montant final de votre épargne en fonction de votre capital initial, de vos
+                        versements mensuels, de la période et du taux d'intérêt.
+                    </p>
+                </div>
 
-            <section class="calculator-section calculator-only">
-                <div class="calculator-form">
-                    <div class="calculator-header">
-                        <h1 class="calculator-title">Simulez vos intérêts composés</h1>
-                        <p class="calculator-description">
-                            Calculez le montant final de votre épargne en fonction de votre capital initial, de vos
-                            versements mensuels, de la période et du taux d'intérêt.
-                        </p>
-                    </div>
+                <form id="calculator-form" aria-describedby="form-instructions">
+                    <p id="form-instructions" class="sr-only">
+                        Remplissez les champs suivants pour simuler vos intérêts composés. Tous les champs sont requis.
+                    </p>
 
-                    <form id="calculator-form">
-                        <div class="form-group">
-                            <label class="form-label" for="capital">
-                                Capital initial
-                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
-                                    <path
-                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
-                                    ></path>
-                                </svg>
-                            </label>
-                            <div class="input-group">
-                                <input
+                    <div class="form-group">
+                        <label class="form-label" for="capital">
+                            Capital initial
+                        </label>
+                        <div class="input-group">
+                            <input
                                     type="number"
                                     step="100"
                                     name="capital"
@@ -418,22 +419,18 @@
                                     class="form-input"
                                     placeholder="100 000"
                                     required
-                                />
-                                <span class="input-suffix">€</span>
-                            </div>
+                                    aria-required="true"
+                            />
+                            <span class="input-suffix" aria-hidden="false">€</span>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="epargne">
-                                Épargne mensuelle
-                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
-                                    <path
-                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
-                                    ></path>
-                                </svg>
-                            </label>
-                            <div class="input-group">
-                                <input
+                    <div class="form-group">
+                        <label class="form-label" for="epargne">
+                            Épargne mensuelle
+                        </label>
+                        <div class="input-group">
+                            <input
                                     type="number"
                                     step="50"
                                     min="0"
@@ -442,22 +439,18 @@
                                     class="form-input"
                                     placeholder="1 000"
                                     required
-                                />
-                                <span class="input-suffix">€</span>
-                            </div>
+                                    aria-required="true"
+                            />
+                            <span class="input-suffix" aria-hidden="false">€</span>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="periode">
-                                Horizon de placement
-                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
-                                    <path
-                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
-                                    ></path>
-                                </svg>
-                            </label>
-                            <div class="input-group">
-                                <input
+                    <div class="form-group">
+                        <label class="form-label" for="periode">
+                            Horizon de placement
+                        </label>
+                        <div class="input-group">
+                            <input
                                     type="number"
                                     name="periode"
                                     id="periode"
@@ -465,22 +458,18 @@
                                     placeholder="20"
                                     min="1"
                                     required
-                                />
-                                <span class="input-suffix">années</span>
-                            </div>
+                                    aria-required="true"
+                            />
+                            <span class="input-suffix" aria-hidden="false">années</span>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="taux">
-                                Taux d'intérêt
-                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
-                                    <path
-                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
-                                    ></path>
-                                </svg>
-                            </label>
-                            <div class="input-group">
-                                <input
+                    <div class="form-group">
+                        <label class="form-label" for="taux">
+                            Taux d'intérêt
+                        </label>
+                        <div class="input-group">
+                            <input
                                     type="number"
                                     step="0.5"
                                     min="0"
@@ -489,92 +478,79 @@
                                     class="form-input"
                                     placeholder="5"
                                     required
-                                />
-                                <span class="input-suffix">%</span>
-                            </div>
+                                    aria-required="true"
+                            />
+                            <span class="input-suffix" aria-hidden="false">%</span>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="intervalle">
-                                Intervalle de versement des intérêts
-                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
-                                    <path
-                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
-                                    ></path>
-                                </svg>
-                            </label>
-                            <div class="input-group">
-                                <select name="intervalle" id="intervalle" class="form-input" required>
-                                    <option value="mensuel">Mensuel</option>
-                                    <option value="trimestriel">Trimestriel</option>
-                                    <option value="annuel">Annuel</option>
-                                </select>
-                            </div>
+                    <div class="form-group">
+                        <label class="form-label" for="intervalle">
+                            Intervalle de versement des intérêts
+                        </label>
+                        <div class="input-group">
+                            <select name="intervalle" id="intervalle" class="form-input" required aria-required="true">
+                                <option value="mensuel">Mensuel</option>
+                                <option value="trimestriel">Trimestriel</option>
+                                <option value="annuel">Annuel</option>
+                            </select>
                         </div>
+                    </div>
 
-                        <button type="submit" class="btn">Calculer</button>
-                    </form>
+                    <button type="submit" class="btn" aria-label="Calculer les intérêts composés">Calculer</button>
+                </form>
+            </div>
+
+            <div class="results-section" role="region" aria-labelledby="results-header">
+                <div class="results-header" id="results-header">
+                    <p class="result-title">Capital final</p>
+                    <p class="result-value" id="final-amount" aria-live="polite">- €</p>
                 </div>
 
-                <div class="results-section">
-                    <div class="results-header">
-                        <p class="result-title">Capital final</p>
-                        <p class="result-value" id="final-amount">- €</p>
+                <div class="results-details">
+                    <div class="detail-item">
+                        <p class="detail-title">Versements</p>
+                        <p class="detail-value" id="total-payments" aria-live="polite">- €</p>
                     </div>
-
-                    <div class="results-details">
-                        <div class="detail-item">
-                            <p class="detail-title">Versements</p>
-                            <p class="detail-value" id="total-payments">- €</p>
-                        </div>
-                        <div class="detail-item">
-                            <p class="detail-title">Intérêts</p>
-                            <p class="detail-value" id="total-interest">- €</p>
-                        </div>
+                    <div class="detail-item">
+                        <p class="detail-title">Intérêts</p>
+                        <p class="detail-value" id="total-interest" aria-live="polite">- €</p>
                     </div>
-
-                    <div class="chart-container">
-                        <canvas id="results-chart"></canvas>
-                    </div>
-
-                    <div class="chart-axis">
-                        <span class="axis-label">Aujourd'hui</span>
-                        <span class="axis-label" id="end-year-label">-</span>
-                    </div>
-
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background-color: #8dadff"></div>
-                            <span class="legend-label">Versements</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background-color: #f1c086"></div>
-                            <span class="legend-label">Intérêts</span>
-                        </div>
-                    </div>
-
-                    <p class="summary" id="summary-text">
-                        Avec un capital initial de <span id="summary-capital">- €</span> et en investissant
-                        mensuellement <span id="summary-monthly">- €</span> pendant
-                        <span id="summary-years">-</span> ans à <span id="summary-rate">- %</span>, vous obtenez un
-                        capital de <span id="summary-final">- €</span>.
-                    </p>
-
-                    <!-- <button class="share-btn">
-                        <svg width="14" height="16" viewBox="0 0 512 512" fill="currentColor">
-                            <path
-                                d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"
-                            ></path>
-                        </svg>
-                        Partager les résultats
-                    </button> -->
                 </div>
-            </section>
 
-            <p class="disclaimer">
-                Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil
-                financier.
-            </p>
+                <div class="chart-container" role="img" aria-label="Graphique montrant la répartition entre versements et intérêts">
+                    <canvas id="results-chart"></canvas>
+                </div>
+
+                <div class="chart-axis" aria-hidden="false">
+                    <span class="axis-label">Aujourd'hui</span>
+                    <span class="axis-label" id="end-year-label">-</span>
+                </div>
+
+                <div class="chart-legend" role="presentation" aria-hidden="false">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #8dadff"></div>
+                        <span class="legend-label">Versements</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #f1c086"></div>
+                        <span class="legend-label">Intérêts</span>
+                    </div>
+                </div>
+
+                <p class="summary" id="summary-text" aria-live="polite">
+                    Avec un capital initial de <span id="summary-capital">- €</span> et en investissant
+                    mensuellement <span id="summary-monthly">- €</span> pendant
+                    <span id="summary-years">-</span> ans à <span id="summary-rate">- %</span>, vous obtenez un
+                    capital de <span id="summary-final">- €</span>.
+                </p>
+            </div>
+        </section>
+
+        <p class="disclaimer" role="note">
+            Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil
+            financier.
+        </p>
 
             <section class="documentation-section documentation">
                 <div class="documentation-container">
