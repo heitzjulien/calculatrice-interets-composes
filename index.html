@@ -1,188 +1,665 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Calculatrice d'intérêts composés</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-        body {
-            font-family: system-ui, sans-serif;
-            background-color: #f4f7f8;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .calculator-container {
-            background-color: #fff;
-            width: 100vw;
-            height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .calculator-title {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #2c3e50;
-            font-size: 22px;
-        }
-        .calculator-group {
-            margin-bottom: 16px;
-        }
-        .calculator-label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .calculator-input,
-        .calculator-select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-        .calculator-button {
-            width: 100%;
-            padding: 12px;
-            background-color: #6834d4;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .calculator-button:hover {
-            background-color: #401D87;
-        }
-        @media (min-width: 600px) {
-            .calculator-container {
-                max-width: 500px;
-                height: auto;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    <head>
+        <meta charset="UTF-8" />
+        <title>Calculatrice d'intérêts composés</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+            integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="main.js" defer></script>
+        <style>
+            :root {
+                --primary: #6834d4;
+                --primary-dark: #401d87;
+                --secondary: #6e727a;
+                --tertiary: #2e2f33;
+                --background: #f4f7f8;
+                --card-bg: #ffffff;
+                --text-primary: #2c3e50;
+                --text-secondary: #666;
+                --border: #e1e4e8;
             }
 
-            .calculator-title {
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+                    sans-serif;
+                background-color: var(--background);
+                color: var(--text-primary);
+                line-height: 1.6;
+            }
+
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            header {
+                padding: 20px 0;
+                text-align: center;
+            }
+
+            .logo {
                 font-size: 24px;
-            }
-        }
-        .resultat {
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-    </style>
-</head>
-<body>
-<div class="calculator-container">
-    <h2 class="calculator-title">Calculatrice d'intérêts composés</h2>
-    <form id="calculator-form">
-        <div class="calculator-group">
-            <label class="calculator-label" for="capital">Capital initial (€):</label>
-            <input type="number" step="100" name="capital" id="capital" class="calculator-input" required>
-        </div>
-
-        <div class="calculator-group">
-            <label class="calculator-label" for="epargne">Épargne mensuelle (€):</label>
-            <input type="number" step="50" min="0" name="epargne" id="epargne" class="calculator-input" required>
-        </div>
-
-        <div class="calculator-group">
-            <label class="calculator-label" for="periode">Période (années):</label>
-            <input type="number" name="periode" id="periode" class="calculator-input" min="1" required>
-        </div>
-
-        <div class="calculator-group">
-            <label class="calculator-label" for="taux">Taux d’intérêt annuel (%):</label>
-            <input type="number" step="0.5" min="0" name="taux" id="taux" class="calculator-input" required>
-        </div>
-
-        <div class="calculator-group">
-            <label class="calculator-label" for="intervalle">Intervalle de versement des intérêts:</label>
-            <select name="intervalle" id="intervalle" class="calculator-select" required>
-                <option value="mensuel">Mensuel</option>
-                <option value="trimestriel">Trimestriel</option>
-                <option value="annuel">Annuel</option>
-            </select>
-        </div>
-
-        <button type="submit" class="calculator-button">Calculer</button>
-        <div id="resultat" class="resultat" role="status" aria-live="polite"></div>
-    </form>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var form = document.getElementById('calculator-form');
-
-        if (!form) {
-            return;
-        }
-
-        form.onsubmit = function (e) {
-            e = e || window.event;
-            e.preventDefault();
-
-            var capital = parseFloat(form.capital.value);
-            var epargne = parseFloat(form.epargne.value);
-            var periode = parseInt(form.periode.value, 10);
-            var tauxAnnuel = parseFloat(form.taux.value);
-            var intervalle = form.intervalle.value;
-
-            if (isNaN(capital) || isNaN(epargne) || isNaN(periode) || isNaN(tauxAnnuel)) {
-                afficherResultat("Veuillez remplir tous les champs correctement.");
-                return;
+                font-weight: 700;
+                color: var(--primary);
             }
 
-            var frequence = 1; // par défaut : annuel
-            if (intervalle === 'mensuel') {
-                frequence = 12;
-            } else if (intervalle === 'trimestriel') {
-                frequence = 4;
+            .calculator-section {
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+                margin-top: 40px;
             }
 
-            var tauxPeriodique = tauxAnnuel / 100 / frequence;
-            var nbPeriodes = periode * frequence;
-            var total = capital;
-            var i;
-
-            for (i = 0; i < nbPeriodes; i++) {
-                total = total * (1 + tauxPeriodique);
-                // Versement mensuel uniquement si fréquence mensuelle :
-                if (frequence === 12) {
-                    total += epargne;
-                } else if (frequence === 4 && (i % 3 === 2)) {
-                    // 3 versements mensuels regroupés pour le trimestre
-                    total += epargne * 3;
-                } else if (frequence === 1) {
-                    total += epargne * 12;
+            @media (min-width: 1024px) {
+                .calculator-section {
+                    flex-direction: row;
                 }
             }
 
-            afficherResultat("Montant final : " + total.toFixed(2) + " €");
-        };
-
-        function afficherResultat(message) {
-            var zone = document.getElementById('resultat');
-            if (zone) {
-                zone.textContent = message;
+            .calculator-header {
+                text-align: center;
+                margin-bottom: 32px;
             }
-        }
-    });
-</script>
-</body>
+
+            .calculator-title {
+                font-size: 32px;
+                font-weight: 700;
+                margin-bottom: 12px;
+                color: var(--text-primary);
+            }
+
+            .calculator-description {
+                text-align: justify;
+                font-size: 16px;
+                color: var(--secondary);
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .calculator-form {
+                background-color: var(--card-bg);
+                border-radius: 12px;
+                padding: 32px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                flex: 1;
+            }
+
+            .form-group {
+                margin-bottom: 24px;
+            }
+
+            .form-label {
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 8px;
+                color: var(--secondary);
+            }
+
+            .info-icon {
+                margin-left: 6px;
+                color: var(--secondary);
+                cursor: pointer;
+            }
+
+            .form-input {
+                width: 100%;
+                padding: 12px 16px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-size: 16px;
+                transition: border-color 0.2s;
+            }
+
+            .form-input:focus {
+                outline: none;
+                border-color: var(--primary);
+            }
+
+            .input-group {
+                position: relative;
+            }
+
+            .input-suffix {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+                color: var(--secondary);
+            }
+
+            .btn {
+                width: 100%;
+                padding: 14px;
+                background-color: var(--primary);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+
+            .btn:hover {
+                background-color: var(--primary-dark);
+            }
+
+            .results-section {
+                background-color: var(--card-bg);
+                border-radius: 12px;
+                padding: 32px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                flex: 1;
+            }
+
+            .results-header {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 24px;
+            }
+
+            .result-title {
+                font-size: 16px;
+                color: var(--secondary);
+            }
+
+            .result-value {
+                font-size: 24px;
+                font-weight: 700;
+                color: var(--primary);
+            }
+
+            .results-details {
+                display: flex;
+                gap: 20px;
+                margin-bottom: 32px;
+            }
+
+            .detail-item {
+                flex: 1;
+            }
+
+            .detail-title {
+                font-size: 14px;
+                color: var(--secondary);
+                margin-bottom: 4px;
+            }
+
+            .detail-value {
+                font-size: 16px;
+                font-weight: 500;
+                color: var(--text-primary);
+            }
+
+            .chart-container {
+                height: 280px;
+                margin-bottom: 24px;
+                position: relative;
+            }
+            .chart-container canvas {
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            .chart-placeholder {
+                width: 100%;
+                height: 100%;
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--secondary);
+            }
+
+            .chart-legend {
+                display: flex;
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+
+            .legend-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .legend-color {
+                width: 16px;
+                height: 16px;
+                border-radius: 4px;
+            }
+
+            .legend-label {
+                font-size: 14px;
+                color: var(--text-primary);
+            }
+
+            .chart-axis {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 16px;
+            }
+
+            .axis-label {
+                font-size: 12px;
+                color: var(--secondary);
+            }
+
+            .summary {
+                font-size: 16px;
+                color: var(--secondary);
+                margin-bottom: 24px;
+                text-align: center;
+            }
+
+            .summary span {
+                color: var(--primary);
+                font-weight: 500;
+            }
+
+            .share-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                width: 100%;
+                padding: 12px;
+                background: none;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-size: 14px;
+                color: var(--secondary);
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .share-btn:hover {
+                background-color: #f8f9fa;
+            }
+
+            .disclaimer {
+                text-align: center;
+                font-size: 14px;
+                color: var(--secondary);
+                margin-top: 40px;
+                padding: 0 20px;
+            }
+
+            .documentation {
+                margin-top: 60px;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 20px;
+            }
+
+            .documentation-container {
+                margin-bottom: 60px;
+            }
+
+            .documentation-title {
+                font-size: 24px;
+                font-weight: 600;
+                margin-bottom: 20px;
+                color: var(--text-primary);
+            }
+
+            .documentation-content {
+                font-size: 16px;
+                color: var(--text-primary);
+            }
+
+            .documentation-content p {
+                margin-bottom: 16px;
+            }
+
+            .documentation-content ul {
+                margin-bottom: 16px;
+                padding-left: 24px;
+            }
+
+            .documentation-content li {
+                margin-bottom: 8px;
+            }
+
+            .documentation-content strong {
+                font-weight: 600;
+            }
+
+            .documentation-content code {
+                font-family: monospace;
+                background-color: #f3f4f6;
+                padding: 2px 4px;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+            blockquote {
+                background-color: #f8f9fa;
+                border-left: 4px solid var(--primary);
+                padding: 12px 16px;
+                margin: 16px 0;
+                font-family: monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <noscript>
+            <style>
+                .calculator-only {
+                    display: none !important;
+                }
+                .noscript-message {
+                    display: block;
+                    background: #f8f9fa;
+                    padding: 20px;
+                    border-radius: 8px;
+                    margin: 20px 0;
+                    text-align: center;
+                }
+            </style>
+            <div class="noscript-message">
+                <p>La calculatrice nécessite JavaScript pour fonctionner. Voici la documentation :</p>
+            </div>
+        </noscript>
+
+        <div class="container">
+            <header>
+                <div class="logo">Calculatrice d'intérêts composés</div>
+            </header>
+
+            <section class="calculator-section calculator-only">
+                <div class="calculator-form">
+                    <div class="calculator-header">
+                        <h1 class="calculator-title">Simulez vos intérêts composés</h1>
+                        <p class="calculator-description">
+                            Calculez le montant final de votre épargne en fonction de votre capital initial, de vos
+                            versements mensuels, de la période et du taux d'intérêt.
+                        </p>
+                    </div>
+
+                    <form id="calculator-form">
+                        <div class="form-group">
+                            <label class="form-label" for="capital">
+                                Capital initial
+                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
+                                    <path
+                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
+                                    ></path>
+                                </svg>
+                            </label>
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    step="100"
+                                    name="capital"
+                                    id="capital"
+                                    class="form-input"
+                                    placeholder="100 000"
+                                    required
+                                />
+                                <span class="input-suffix">€</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="epargne">
+                                Épargne mensuelle
+                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
+                                    <path
+                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
+                                    ></path>
+                                </svg>
+                            </label>
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    step="50"
+                                    min="0"
+                                    name="epargne"
+                                    id="epargne"
+                                    class="form-input"
+                                    placeholder="1 000"
+                                    required
+                                />
+                                <span class="input-suffix">€</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="periode">
+                                Horizon de placement
+                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
+                                    <path
+                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
+                                    ></path>
+                                </svg>
+                            </label>
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    name="periode"
+                                    id="periode"
+                                    class="form-input"
+                                    placeholder="20"
+                                    min="1"
+                                    required
+                                />
+                                <span class="input-suffix">années</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="taux">
+                                Taux d'intérêt
+                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
+                                    <path
+                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
+                                    ></path>
+                                </svg>
+                            </label>
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    step="0.5"
+                                    min="0"
+                                    name="taux"
+                                    id="taux"
+                                    class="form-input"
+                                    placeholder="5"
+                                    required
+                                />
+                                <span class="input-suffix">%</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="intervalle">
+                                Intervalle de versement des intérêts
+                                <svg class="info-icon" width="12" height="12" viewBox="0 0 512 512" fill="currentColor">
+                                    <path
+                                        d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM296 336h-16V248C280 234.8 269.3 224 256 224H224C210.8 224 200 234.8 200 248S210.8 272 224 272h8v64h-16C202.8 336 192 346.8 192 360S202.8 384 216 384h80c13.25 0 24-10.75 24-24S309.3 336 296 336zM256 192c17.67 0 32-14.33 32-32c0-17.67-14.33-32-32-32S224 142.3 224 160C224 177.7 238.3 192 256 192z"
+                                    ></path>
+                                </svg>
+                            </label>
+                            <div class="input-group">
+                                <select name="intervalle" id="intervalle" class="form-input" required>
+                                    <option value="mensuel">Mensuel</option>
+                                    <option value="trimestriel">Trimestriel</option>
+                                    <option value="annuel">Annuel</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn">Calculer</button>
+                    </form>
+                </div>
+
+                <div class="results-section">
+                    <div class="results-header">
+                        <p class="result-title">Capital final</p>
+                        <p class="result-value" id="final-amount">- €</p>
+                    </div>
+
+                    <div class="results-details">
+                        <div class="detail-item">
+                            <p class="detail-title">Versements</p>
+                            <p class="detail-value" id="total-payments">- €</p>
+                        </div>
+                        <div class="detail-item">
+                            <p class="detail-title">Intérêts</p>
+                            <p class="detail-value" id="total-interest">- €</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="results-chart"></canvas>
+                    </div>
+
+                    <div class="chart-axis">
+                        <span class="axis-label">Aujourd'hui</span>
+                        <span class="axis-label" id="end-year-label">-</span>
+                    </div>
+
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #8dadff"></div>
+                            <span class="legend-label">Versements</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #f1c086"></div>
+                            <span class="legend-label">Intérêts</span>
+                        </div>
+                    </div>
+
+                    <p class="summary" id="summary-text">
+                        Avec un capital initial de <span id="summary-capital">- €</span> et en investissant
+                        mensuellement <span id="summary-monthly">- €</span> pendant
+                        <span id="summary-years">-</span> ans à <span id="summary-rate">- %</span>, vous obtenez un
+                        capital de <span id="summary-final">- €</span>.
+                    </p>
+
+                    <!-- <button class="share-btn">
+                        <svg width="14" height="16" viewBox="0 0 512 512" fill="currentColor">
+                            <path
+                                d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"
+                            ></path>
+                        </svg>
+                        Partager les résultats
+                    </button> -->
+                </div>
+            </section>
+
+            <p class="disclaimer">
+                Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil
+                financier.
+            </p>
+
+            <section class="documentation-section documentation">
+                <div class="documentation-container">
+                    <h2 class="documentation-title">Comment fonctionnent les intérêts composés ?</h2>
+                    <div class="documentation-content">
+                        <p>
+                            Les intérêts composés sont calculés sur le capital initial et les intérêts accumulés au fil
+                            du temps. Voici la formule :
+                        </p>
+                        <blockquote>
+                            Montant final = Capital initial × (1 + Taux d'intérêt / Fréquence) ^ (Période × Fréquence) +
+                            Épargne mensuelle × ((1 + Taux d'intérêt / Fréquence) ^ (Période × Fréquence) - 1) / (Taux
+                            d'intérêt / Fréquence)
+                        </blockquote>
+                        <p>Où :</p>
+                        <ul>
+                            <li>
+                                <strong>Capital initial</strong> : le montant d'argent que vous investissez au départ.
+                            </li>
+                            <li>
+                                <strong>Taux d'intérêt</strong> : le pourcentage d'intérêt que vous gagnez sur votre
+                                investissement.
+                            </li>
+                            <li>
+                                <strong>Période</strong> : la durée pendant laquelle vous laissez votre argent investi.
+                            </li>
+                            <li>
+                                <strong>Épargne mensuelle</strong> : le montant que vous ajoutez chaque mois à votre
+                                investissement.
+                            </li>
+                            <li>
+                                <strong>Fréquence</strong> : la fréquence à laquelle les intérêts sont calculés
+                                (mensuel, trimestriel, annuel).
+                            </li>
+                        </ul>
+                        <p>
+                            Par exemple, si vous investissez 10 000 € à un taux d'intérêt de 5 % par an pendant 10 ans
+                            avec des versements mensuels de 100 €, le montant final sera calculé comme suit :
+                        </p>
+                        <blockquote>
+                            Montant final = 10 000 × (1 + 0.05 / 12) ^ (10 × 12) + 100 × ((1 + 0.05 / 12) ^ (10 × 12) -
+                            1) / (0.05 / 12)
+                        </blockquote>
+                        <p>Ce qui donne un montant final d'environ 20 000 €.</p>
+                    </div>
+                </div>
+
+                <div class="documentation-container">
+                    <h2 class="documentation-title">Comment utiliser la calculatrice d'intérêts composés ?</h2>
+                    <div class="documentation-content">
+                        <p>
+                            Le calculateur d'intérêts composés est un outil facile à utiliser pour visualiser la
+                            croissance potentielle de vos investissements sur le long terme. Pour commencer, renseignez
+                            votre capital initial et indiquez le montant que vous prévoyez d'épargner chaque mois.
+                        </p>
+                        <p>
+                            Vous devrez ensuite choisir votre horizon de placement, en années, et le taux d'intérêt
+                            annuel que vous attendez de vos investissements.
+                        </p>
+                        <p>
+                            Le calculateur simule les intérêts composés en fonction des versements réguliers et du taux
+                            d'intérêt, montrant ainsi comment votre capital peut croître au fil du temps. L'outil prend
+                            en compte les versements des intérêts, qui peuvent être réglés sur une fréquence mensuelle,
+                            trimestrielle ou annuelle.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="documentation-container">
+                    <h2 class="documentation-title">Comprendre les résultats de la calculatrice</h2>
+                    <div class="documentation-content">
+                        <p>
+                            Lorsque vous utilisez notre calculatrice d'intérêts composés, le résultat affiché est le
+                            montant final que vous obtiendrez après la période spécifiée, en tenant compte de votre
+                            capital initial, de vos versements mensuels et du taux d'intérêt.
+                        </p>
+                        <p>
+                            Le montant final est calculé en tenant compte des intérêts composés, ce qui signifie que les
+                            intérêts sont calculés non seulement sur le capital initial, mais aussi sur les intérêts
+                            accumulés au fil du temps.
+                        </p>
+                        <p>
+                            Il est important de noter que le montant final peut varier en fonction de la fréquence à
+                            laquelle les intérêts sont calculés (mensuel, trimestriel ou annuel). Plus la fréquence est
+                            élevée, plus le montant final sera élevé.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </body>
 </html>
