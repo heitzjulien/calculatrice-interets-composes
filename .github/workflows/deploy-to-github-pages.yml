@@ -15,11 +15,35 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+
+      - name: Start static server
+        run: |
+          npx serve -s . -l 8080 &
+          sleep 5
+
+      - name: Run Lighthouse CI
+        run: lhci autorun
+
   deploy:
     name: Build & Deploy
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    needs: lighthouse
+    if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
