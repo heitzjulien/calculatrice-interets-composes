@@ -35,9 +35,24 @@ document.addEventListener("DOMContentLoaded", function () {
         var tauxAnnuel = parseFloat(form.taux.value) || 0;
         var intervalle = form.intervalle.value;
 
-        var frequence = intervalle === "mensuel" ? 12 : intervalle === "trimestriel" ? 4 : 1;
+        // Déterminer la fréquence de capitalisation
+        var frequence;
+        switch (intervalle) {
+            case "mensuel":
+                frequence = 12;
+                break;
+            case "trimestriel":
+                frequence = 4;
+                break;
+            case "annuel":
+                frequence = 1;
+                break;
+            default:
+                frequence = 12;
+        }
 
-        var tauxPeriodique = tauxAnnuel / 100 / frequence;
+        var tauxPeriode = tauxAnnuel / 100 / frequence;
+        var totalPeriodes = periode * frequence;
 
         // Données pour le graphique
         var years = [];
@@ -50,28 +65,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Point de départ
         years.push(0);
-        capitalData.push(capital);
+        capitalData.push(total);
         interestData.push(0);
 
-        for (var year = 1; year <= periode; year++) {
-            for (var period = 0; period < frequence; period++) {
-                var interest = total * tauxPeriodique;
-                totalInterest += interest;
-                total = total * (1 + tauxPeriodique);
+        // Calculer le versement par période
+        var versementParPeriode;
+        if (frequence === 12) {
+            versementParPeriode = epargne; // Mensuel
+        } else if (frequence === 4) {
+            versementParPeriode = epargne * 3; // Trimestriel (3 mois)
+        } else {
+            versementParPeriode = epargne * 12; // Annuel (12 mois)
+        }
 
-                if (frequence === 12) {
-                    total += epargne;
-                    totalPayments += epargne;
-                } else if (frequence === 4 && period % 3 === 2) {
-                    total += epargne * 3;
-                    totalPayments += epargne * 3;
-                }
+        for (var periode_i = 1; periode_i <= totalPeriodes; periode_i++) {
+            var interest = total * tauxPeriode;
+            totalInterest += interest;
+            total += interest;
+
+            total += versementParPeriode;
+            totalPayments += versementParPeriode;
+
+            if (periode_i % frequence === 0) {
+                var year = periode_i / frequence;
+                years.push(year);
+                capitalData.push(total);
+                interestData.push(totalInterest);
             }
-
-            // Ajouter le point de données annuel
-            years.push(year);
-            capitalData.push(totalPayments);
-            interestData.push(totalInterest);
         }
 
         // Mettre à jour le graphique
@@ -105,12 +125,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("summary-rate").textContent = tauxAnnuel + "%";
         document.getElementById("summary-final").textContent = formatMoney(total);
 
-        // Mettre à jour l'année de fin
+        // Mettre à jour l'année de fin 
         var currentYear = new Date().getFullYear();
         document.getElementById("end-year-label").textContent = currentYear + periode;
     };
 
     function formatMoney(amount) {
-        return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$& ") + " €";
+        return amount
+                .toFixed(2)
+                .replace(/\d(?=(\d{3})+\.)/g, "$& ")
+            + " €";
     }
 });
