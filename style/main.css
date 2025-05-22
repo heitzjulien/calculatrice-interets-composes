@@ -30,15 +30,23 @@ header {
 }
 
 .calculator-section {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    margin-top: 40px;
+    display: block;
+}
+
+.calculator-section::after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 @media (min-width: 1024px) {
-    .calculator-section {
-        flex-direction: row;
+    .calculator-form,
+    .results-section {
+        float: left;
+        width: 48%;
+    }
+    .results-section {
+        margin-left: 4%;
     }
 }
 
@@ -64,8 +72,12 @@ header {
 
 .calculator-form {
     background-color: #ffffff;
-    border-radius: 12px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
     padding: 32px;
+    -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     flex: 1;
 }
@@ -75,8 +87,7 @@ header {
 }
 
 .form-label {
-    display: flex;
-    align-items: center;
+    display: block;
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 8px;
@@ -84,6 +95,8 @@ header {
 }
 
 .info-icon {
+    display: inline-block;
+    vertical-align: middle;
     margin-left: 6px;
     color: #545962;
     cursor: pointer;
@@ -93,6 +106,8 @@ header {
     width: 100%;
     padding: 12px 16px;
     border: 1px solid #e1e4e8;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
     border-radius: 8px;
     font-size: 16px;
     transition: border-color 0.2s;
@@ -111,6 +126,10 @@ header {
     position: absolute;
     right: 12px;
     top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
     transform: translateY(-50%);
     font-size: 14px;
     color: #545962;
@@ -122,6 +141,8 @@ header {
     background-color: #6834d4;
     color: white;
     border: none;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 500;
@@ -135,37 +156,42 @@ header {
 
 .results-section {
     background-color: #ffffff;
-    border-radius: 12px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
     padding: 32px;
+    -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     flex: 1;
 }
 
 .results-header {
-    display: flex;
-    justify-content: space-between;
+    overflow: hidden;
     margin-bottom: 24px;
 }
 
 .result-title {
-    font-size: 16px;
-    color: #545962;
+    float: left;
 }
 
 .result-value {
-    font-size: 24px;
-    font-weight: 700;
-    color: #6834d4;
+    float: right;
 }
 
 .results-details {
-    display: flex;
-    gap: 20px;
+    overflow: hidden;
     margin-bottom: 32px;
 }
 
 .detail-item {
-    flex: 1;
+    float: left;
+    width: 48%;
+    margin-right: 4%;
+}
+
+.detail-item:last-child {
+    margin-right: 0;
 }
 
 .detail-title {
@@ -248,18 +274,21 @@ header {
 }
 
 .share-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    display: block;
+    text-align: center;
     width: 100%;
     padding: 12px;
     background: none;
     border: 1px solid #e1e4e8;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
     border-radius: 8px;
     font-size: 14px;
     color: #545962;
     cursor: pointer;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
     transition: all 0.2s;
 }
 
@@ -272,11 +301,11 @@ header {
     font-size: 14px;
     color: #545962;
     margin-top: 40px;
+    margin-bottom: 40px;
     padding: 0 20px;
 }
 
 .documentation {
-    margin-top: 60px;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -284,7 +313,7 @@ header {
 }
 
 .documentation-container {
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .documentation-title {
@@ -329,6 +358,6 @@ blockquote {
     border-radius: 6px;
     border-left: 6px solid #6834d4;
     padding: 12px 16px;
-    margin: 16px 0;
+    margin: 20px 0;
     font-family: monospace;
 }
