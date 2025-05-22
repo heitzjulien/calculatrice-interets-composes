@@ -113,6 +113,31 @@ document.addEventListener("DOMContentLoaded", function () {
         ];
         chart.update();
 
+        // Mettre à jour la table des données du graphique
+        var tableBody = document.getElementById("chart-data-body");
+        tableBody.innerHTML = "";
+
+        for (var i = 0; i < years.length; i++) {
+            var row = document.createElement("tr");
+
+            var yearCell = document.createElement("td");
+            yearCell.textContent = years[i];
+            row.appendChild(yearCell)
+
+            var capitalCell = document.createElement("td");
+            capitalCell.textContent = formatMoney(capitalData[i]);
+
+            row.appendChild(capitalCell);
+
+
+            var interestCell = document.createElement("td");
+            interestCell.textContent = formatMoney(interestData[i]);
+            row.appendChild(interestCell);
+
+            tableBody.appendChild(row);
+        }
+
+
         // Mettre à jour les résultats
         document.getElementById("final-amount").textContent = formatMoney(total);
         document.getElementById("total-payments").textContent = formatMoney(totalPayments - capital);

@@ -367,3 +367,37 @@ blockquote {
     margin: 20px 0;
     font-family: monospace;
 }
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    color: #2c3e50;
+    margin-bottom: 24px;
+}
+
+table th {
+    background-color: #6834d4;
+    color: white;
+    font-weight: 700;
+    text-align: left;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+}
+
+table td {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    vertical-align: top;
+}
+
+table tr:nth-child(even) {
+    background-color: #f4f7f8; 
+}
+
+.table-container {
+    overflow-x: auto;
+}
