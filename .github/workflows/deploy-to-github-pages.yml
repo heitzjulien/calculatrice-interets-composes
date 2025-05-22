@@ -23,10 +23,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: Install dependencies
         run: |
           npm install -g html-minifier-terser clean-css-cli terser postcss-cli autoprefixer
-          npm install
 
       - name: Minify and optimize assets
         run: |
