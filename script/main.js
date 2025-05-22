@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("summary-rate").textContent = tauxAnnuel + "%";
         document.getElementById("summary-final").textContent = formatMoney(total);
 
-        // Mettre à jour l'année de fin 
+        // Mettre à jour l'année de fin
         var currentYear = new Date().getFullYear();
         document.getElementById("end-year-label").textContent = currentYear + periode;
     };
