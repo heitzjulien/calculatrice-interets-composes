@@ -26,12 +26,63 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Lighthouse CI
-        run: npm install -g @lhci/cli
+      - name: Install dependencies
+        run: |
+          npm install -g html-minifier-terser clean-css-cli terser postcss-cli autoprefixer @lhci/cli
+          npm install
+
+      - name: Minify and optimize assets
+        run: |
+          set -e  # Stop on any error
+          mkdir -p dist/script dist/style
+      
+          echo "Minifying HTML..."
+          html-minifier-terser \
+          --collapse-whitespace \
+          --remove-comments \
+          --remove-optional-tags \
+          --remove-redundant-attributes \
+          --remove-script-type-attributes \
+          --remove-tag-whitespace \
+          --use-short-doctype \
+          --minify-css true \
+          --minify-js true \
+          -o dist/index.html \
+          index.html
+      
+          echo "Processing and minifying CSS..."
+          for cssfile in main noscript; do
+          postcss "style/${cssfile}.css" \
+          --use autoprefixer \
+          --no-map \
+          -o "temp-${cssfile}.css"
+          
+          cleancss \
+          -o "dist/style/${cssfile}.css" \
+          "temp-${cssfile}.css"
+          done
+      
+          echo "Minifying JavaScript..."
+          for jsfile in main; do
+          terser "script/${jsfile}.js" \
+          --compress \
+          --mangle \
+          --comments false \
+          -o "dist/script/${jsfile}.js"
+          done
+      
+          echo "Copying assets..."
+          cp -r assets dist/ || true
+          [ -f favicon.ico ] && cp favicon.ico dist/
+      
+          echo "Cleaning up temporary files..."
+          rm -f temp-*.css
+      
+          echo "✅ Assets successfully optimized."
 
       - name: Start static server
         run: |
-          npx serve -s . -l 8080 &
+          npx serve -s ./dist -l 8080 &
           sleep 5
 
       - name: Run Lighthouse CI
@@ -53,7 +104,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
