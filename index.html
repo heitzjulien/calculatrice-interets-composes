@@ -196,26 +196,6 @@
                     <span id="summary-years">-</span> ans à <span id="summary-rate">- %</span>, vous obtenez un
                     capital de <span id="summary-final">- €</span>.
                 </p>
-
-                <div class="chart-table-container" role="region" aria-label="Tableau des résultats du graphique" aria-describedby="table-description">
-                    <div id="table-description" class="sr-only">
-                        Ce tableau montre l’évolution du capital total et des intérêts cumulés pour chaque année.
-                    </div>
-                    <table class="chart-data-table" aria-label="Tableau montrant l’évolution du capital total et des intérêts cumulés pour chaque année." aria-colcount="3">
-                        <caption>Évolution du capital et des intérêts au fil des années</caption>
-                        <thead role="rowgroup">
-                        <tr>
-                            <th scope="col">Année</th>
-                            <th scope="col">Capital total</th>
-                            <th scope="col">Intérêts cumulés</th>
-                        </tr>
-                        </thead>
-                        <tbody id="chart-data-body">
-                        </tbody>
-                    </table>
-                </div>
-
-
             </div>
         </section>
 
@@ -223,6 +203,25 @@
             Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil
             financier.
         </p>
+
+            <div class="chart-table-container" role="region" aria-label="Tableau des résultats du graphique" aria-describedby="table-description">
+                <div id="table-description" class="sr-only disclaimer">
+                    Ce tableau montre l’évolution du capital total et des intérêts cumulés pour chaque année.
+                </div>
+                <table class="chart-data-table" aria-label="Tableau montrant l’évolution du capital total et des intérêts cumulés pour chaque année." aria-colcount="3">
+                    <caption>Évolution du capital et des intérêts au fil des années</caption>
+                    <thead role="rowgroup">
+                    <tr>
+                        <th scope="col">Année</th>
+                        <th scope="col">Capital total</th>
+                        <th scope="col">Intérêts cumulés</th>
+                    </tr>
+                    </thead>
+                    <tbody id="chart-data-body">
+                    </tbody>
+                </table>
+            </div>
+        
         <article>
             <section class="documentation-section documentation">
                 <div class="documentation-container">
