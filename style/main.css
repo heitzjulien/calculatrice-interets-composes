@@ -24,7 +24,7 @@ header {
 }
 
 .logo {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: 700;
     color: #6834d4;
 }
@@ -52,13 +52,13 @@ header {
 
 .calculator-header {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
 }
 
 .calculator-title {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     color: #2c3e50;
 }
 
@@ -66,8 +66,7 @@ header {
     text-align: justify;
     font-size: 16px;
     color: #545962;
-    max-width: 500px;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .calculator-form {
@@ -80,6 +79,10 @@ header {
     -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     flex: 1;
+}
+
+.sr-only {
+    margin-bottom: 16px;
 }
 
 .form-group {
