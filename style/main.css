@@ -177,6 +177,9 @@ header {
 
 .result-value {
     float: right;
+    font-size: 24px;
+    font-weight: 700;
+    color: #6834d4;
 }
 
 .results-details {

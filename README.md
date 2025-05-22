@@ -22,7 +22,6 @@ Cette application web permet de calculer facilement l’évolution d’un capita
 
 1. **Pré-requis**
     - Un navigateur web moderne.
-    - (Optionnel) Node.js et npm si une version locale JS est disponible.
 
 2. **Installation**
 
