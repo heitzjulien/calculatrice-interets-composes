@@ -326,6 +326,7 @@ header {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
+    margin-top: 40px;
     color: #2c3e50;
 }
 
@@ -366,6 +367,18 @@ blockquote {
     padding: 12px 16px;
     margin: 20px 0;
     font-family: monospace;
+}
+
+.chart-table-container {
+    background-color: #ffffff;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    padding: 32px;
+    -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    flex: 1;
 }
 
 table {
