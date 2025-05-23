@@ -55,7 +55,7 @@ Developper une calculatrice d'intérêts composés accessible et proposer une do
 
 ### Compatibilité navigateurs
 
-Navigateurs testés:
+Navigateurs testés avec [BrowserLing](https://www.browserling.com) et [BrowserStack](https://www.browserstack.com/live):
   - IE 10 - 2012
   - Tor 7.5 - 2018
   - Chrome 30 - 2013
@@ -83,14 +83,13 @@ Correctifs spécifiques:
     color: #545962;
 }
 ```
-
 ### Compatibilité machines
 
 Grâce aux `@media` queries et aux propriétés de layout, nous avons pu avoir une approche Mobile-First et responsive. L'application est compatible avec des devices taille Desktop, Tablette et Mobile.
 
 ### Comportement VoiceOver
 
-Outils de VoiceOver testés:
+Outils de lecteur d'écran testés:
   - NVDA
   - VoiceOver natif macOS
   - JAWS
@@ -104,7 +103,13 @@ La plateforme est entièrement couverte par le VoiceOver, à l'exception du grap
 
 ![Image du VoiceOver sur le tableau des résultats](./VoiceOver_Table.png)
 
-### Rapport de performances d'accessibilité
+### Couleurs et contrastes
+
+Grâce à la plateforme [Whocanuse](https://www.whocanuse.com/) nous avons pu tester l'accessibilité de nos combinaisons de couleurs.
+
+![Whocanuse de nos couleurs de texte principales sur la couleur de fond principale](./whocanuse1.png)
+
+Notre objectif pour chaque couleur de texte de fond est d'atteindre un WCAG Grading AAA.
 
 ## Performances
 
