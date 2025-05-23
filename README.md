@@ -2,6 +2,8 @@
 
 Une calculatrice d’intérêt composé conçue pour une accessibilité maximale (niveau AAA), incluant le support complet des lecteurs d’écran (VoiceOver), une gestion optimisée des couleurs (contraste élevé et modes accessibles), une navigation sans JavaScript, des labels ARIA précis, et une expérience inclusive pour tous les utilisateurs.
 
+Consultez aussi [notre rapport technique](./docs/rapport_technique.md)
+
 ---
 
 ## Présentation du projet
