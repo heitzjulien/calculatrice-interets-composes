@@ -16,12 +16,12 @@
         ></script>
         <script defer src="script/main.js"></script>
         <link rel="stylesheet" href="style/main.css">
-        <link rel="icon" type="image/png" href="/assets/favicon-96x96.png" sizes="96x96" />
-        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
-        <link rel="shortcut icon" href="/assets/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" href="assets/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+        <link rel="shortcut icon" href="assets/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-title" content="Calculatrice d'intérêts composés" />
-        <link rel="manifest" href="/assets/site.webmanifest" />
+        <link rel="manifest" href="assets/site.webmanifest" />
     </head>
     <body>
     <noscript>
@@ -65,7 +65,8 @@
                                     name="capital"
                                     id="capital"
                                     class="form-input"
-                                    placeholder="100 000"
+                                    placeholder="Entrez votre capital"
+                                    aria-placeholder="Entrez votre capital"
                                     required
                                     aria-required="true"
                             />
@@ -85,7 +86,8 @@
                                     name="epargne"
                                     id="epargne"
                                     class="form-input"
-                                    placeholder="1 000"
+                                    placeholder="Entrez votre épargne"
+                                    aria-placeholder="Entrez votre épargne"
                                     required
                                     aria-required="true"
                             />
@@ -103,7 +105,8 @@
                                     name="periode"
                                     id="periode"
                                     class="form-input"
-                                    placeholder="20"
+                                    placeholder="Entrez votre période"
+                                    aria-placeholder="Entrez votre période"
                                     min="1"
                                     required
                                     aria-required="true"
@@ -124,7 +127,8 @@
                                     name="taux"
                                     id="taux"
                                     class="form-input"
-                                    placeholder="5"
+                                    placeholder="Entrez votre taux"
+                                    aria-placeholder="Entrez votre taux"
                                     required
                                     aria-required="true"
                             />
@@ -165,11 +169,11 @@
                         <p class="detail-value" id="total-interest" aria-live="polite">- €</p>
                     </div>
                 </div>
-
-                <div class="chart-container" role="img" aria-label="Graphique montrant la répartition entre versements et intérêts">
-                    <canvas id="results-chart"></canvas>
+                
+                <div class="chart-container" >
+                    <canvas id="results-chart" role="img" aria-label="Graphique montrant la répartition entre versements et intérêts">Ton navigateur ne supporte pas l'élément canva</canvas>
                 </div>
-
+                
                 <div class="chart-axis" aria-hidden="false">
                     <span class="axis-label">Aujourd'hui</span>
                     <span class="axis-label" id="end-year-label">-</span>
@@ -199,6 +203,26 @@
             Cet outil sert uniquement à des fins d'information. Il ne doit pas être considéré comme un conseil
             financier.
         </p>
+    
+        <section class="chart-table-container">
+            <div role="region" aria-label="Tableau des résultats du graphique" aria-describedby="table-description">
+                <div id="table-description" class="sr-only">
+                    Ce tableau montre l’évolution du capital total et des intérêts cumulés pour chaque année.
+                </div>
+                <table class="chart-data-table" aria-label="Tableau montrant l’évolution du capital total et des intérêts cumulés pour chaque année." aria-colcount="3">
+                    <caption>Évolution du capital et des intérêts au fil des années</caption>
+                    <thead role="rowgroup">
+                    <tr>
+                        <th scope="col">Année</th>
+                        <th scope="col">Capital total</th>
+                        <th scope="col">Intérêts cumulés</th>
+                    </tr>
+                    </thead>
+                    <tbody id="chart-data-body">
+                    </tbody>
+                </table>
+            </div>
+        </section>
         <article>
             <section class="documentation-section documentation">
                 <div class="documentation-container">
